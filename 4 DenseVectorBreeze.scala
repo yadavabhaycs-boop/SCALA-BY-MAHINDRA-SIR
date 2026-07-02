@@ -1,6 +1,5 @@
 //S123 ABHAY YADAV
 import breeze.linalg._
-import breeze.stats._
 
 object DenseVectorBreeze {
 
@@ -10,7 +9,6 @@ object DenseVectorBreeze {
     val v1 = DenseVector(1.0, 2.0, 3.0, 4.0, 5.0)
     val v2 = DenseVector(5.0, 4.0, 3.0, 2.0, 1.0)
 
-    // Display vectors
     println(s"Vector v1: $v1")
     println(s"Vector v2: $v2")
 
@@ -26,5 +24,4 @@ object DenseVectorBreeze {
     val dotProduct = v1 dot v2
     println(f"Dot Product of v1 and v2: $dotProduct%.2f")
   }
-
 }
