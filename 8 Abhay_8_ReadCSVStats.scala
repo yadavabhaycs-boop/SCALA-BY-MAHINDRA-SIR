@@ -1,63 +1,44 @@
-// S123 ABHAY YADAV
+import com.github.tototoshi.csv._
+import java.io.File
+import scala.util.Try
+import scala.math._
 
+object Abhay_8_ReadCSVStats {
 
-import breeze.linalg._
+  def main(args: Array[String]): Unit = {
 
+    // Open CSV file
+    val reader = CSVReader.open(new File("students.csv"))
+    val allRows = reader.allWithHeaders()
+    reader.close()
 
-object P7FootballMatrix {
+    // Find numeric columns
+    val numericCols = allRows.head.keys.filter { col =>
+      Try(allRows.head(col).toDouble).isSuccess
+    }.toList
 
+    println(s"Numeric Columns: ${numericCols.mkString(", ")}\n")
 
- def main(args: Array[String]): Unit = {
+    // Calculate statistics for each numeric column
+    for (col <- numericCols) {
 
+      val values = allRows.flatMap(row =>
+        Try(row(col).toDouble).toOption
+      )
 
-   // Goals scored by Team A and Team B
-   val teamA = DenseMatrix(
-     (2.0, 1.0),
-     (3.0, 4.0)
-   )
+      val count = values.size
+      val mean = values.sum / count
+      val minVal = values.min
+      val maxVal = values.max
+      val stdDev = sqrt(values.map(x => pow(x - mean, 2)).sum / count)
 
-
-   val teamB = DenseMatrix(
-     (1.0, 2.0),
-     (4.0, 2.0)
-   )
-
-
-   // Element-wise operations
-   val addition = teamA + teamB
-   val subtraction = teamA - teamB
-   val multiplication = teamA *:* teamB
-   val division = teamA /:/ teamB
-
-
-   // Display matrices
-   println("Team A Goals:")
-   println(teamA)
-
-
-   println("\nTeam B Goals:")
-   println(teamB)
-
-
-   // Addition
-   println("\nAddition:")
-   println(addition)
-
-
-   // Subtraction
-   println("\nSubtraction:")
-   println(subtraction)
-
-
-   // Element-wise Multiplication
-   println("\nElement-wise Multiplication:")
-   println(multiplication)
-
-
-   // Element-wise Division
-   println("\nElement-wise Division:")
-   println(division)
-
-
- }
+      println(s"Column: $col")
+      println(s"Count  : $count")
+      println(f"Mean   : $mean%.2f")
+      println(f"Min    : $minVal%.2f")
+      println(f"Max    : $maxVal%.2f")
+      println(f"Std Dev: $stdDev%.2f")
+      println()
+    }
+  }
 }
